@@ -49,6 +49,8 @@ public class Main extends processing.core.PApplet{
         temp = rockImg.getAction();
         fill(0);
         textSize(40);
+        player = new Player("Halim");
+
     }
     public void draw(){
         if(!gameStarted) {
@@ -95,11 +97,15 @@ public class Main extends processing.core.PApplet{
         if(mouseX >= 300 && mouseX <=500 && mouseY >=200 && mouseY <=400 && !gameStarted){
             gameStarted=true;
             game=new Game(0,"Game Started!");
-            player = new Player("Halim");
         }
         else if (mouseX >= 720 && mouseX <= 920 && mouseY >=200 && mouseY <=400 && !gameStarted ){
             game = new Game(1,"Game started for multiplayer session");
-            game.initServer(5000);
+            player.initSocket();
+            System.out.println(player.isConnected());
+            if(!player.isConnected()){
+                game.initServer(5000);
+            }
+
 
         }
         else if(mouseX >= 250 && mouseX <=450 && mouseY >=350 && mouseY <=550 && gameStarted && !playerChoised){

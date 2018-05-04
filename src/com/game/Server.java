@@ -8,7 +8,7 @@ public class Server {
     private Socket socket   = null;
     private ServerSocket server   = null;
     private BufferedReader in       =  null;
-    private DataOutputStream out =  null;
+    private BufferedWriter out =  null;
     public Server(int port){
         try {
             server = new ServerSocket(port);
