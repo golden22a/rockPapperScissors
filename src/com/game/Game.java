@@ -3,6 +3,7 @@ package com.game;
 public class Game {
     private int type;
     private String message;
+    private Server gameServer;
     public Game(int type,String message){
         this.type = type;
         this.message = message;
@@ -39,5 +40,8 @@ public class Game {
         }else {
             this.message = "You Won!!";
         }
+    }
+    public void initServer(int port ){
+        gameServer = new Server(port);
     }
 }

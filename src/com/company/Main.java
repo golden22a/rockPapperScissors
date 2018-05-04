@@ -57,11 +57,10 @@ public class Main extends processing.core.PApplet{
             image(multiImg, 720, 200, 200, 200);
             text("play vs Computer", 250, 450);
             text("play vs Player", 680, 450);
-            System.out.println((int )(Math.random() * 3));
         }
         else {
             background(255);
-                        if(playerChoised) {
+                        if(playerChoised && game.getType() == 0) {
 
                             if (time  % 5 == 0) {
                                 temp = Item.getPimage(choices.get(itemsIndex));
@@ -80,6 +79,9 @@ public class Main extends processing.core.PApplet{
                             }
                             time++;
                         }
+                        else{
+
+            }
 
             image(temp, 550, 100, 200, 200);
             image(Item.getPimage(choices.get(0)), 250, 350, 200, 200);
@@ -94,6 +96,11 @@ public class Main extends processing.core.PApplet{
             gameStarted=true;
             game=new Game(0,"Game Started!");
             player = new Player("Halim");
+        }
+        else if (mouseX >= 720 && mouseX <= 920 && mouseY >=200 && mouseY <=400 && !gameStarted ){
+            game = new Game(1,"Game started for multiplayer session");
+            game.initServer(5000);
+
         }
         else if(mouseX >= 250 && mouseX <=450 && mouseY >=350 && mouseY <=550 && gameStarted && !playerChoised){
             playerChoised = true;
