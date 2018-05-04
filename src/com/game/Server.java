@@ -9,16 +9,39 @@ public class Server {
     private ServerSocket server   = null;
     private BufferedReader in       =  null;
     private BufferedWriter out =  null;
+    private String lastMessage = "";
     public Server(int port){
         try {
             server = new ServerSocket(port);
             System.out.println("server started");
+            System.out.println("Waiting for player to join");
             socket = server.accept();
             System.out.println("Client accepted");
-            in = new BufferedReader((new InputStreamReader(socket.getInputStream())));
 
-            String line = in.readLine();
-            System.out.println(line);
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+    }
+   public String getMessage(){
+        try {
+            System.out.println("waiting for choice");
+            in = new BufferedReader((new InputStreamReader(socket.getInputStream())));
+            lastMessage = in.readLine();
+            System.out.println(lastMessage);
+            return lastMessage;
+        }catch(IOException e){
+            System.out.println(e);
+            return "ERROR";
+        }
+   }
+    public void sendMessage(int choice){
+        try {
+
+            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            out.write(""+choice);
+            out.newLine();
+            out.flush();
         }
         catch(IOException e){
             System.out.println(e);

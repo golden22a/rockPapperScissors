@@ -4,6 +4,8 @@ public class Game {
     private int type;
     private String message;
     private Server gameServer;
+    private boolean isServer = false;
+    private boolean onSession = false;
     public Game(int type,String message){
         this.type = type;
         this.message = message;
@@ -41,7 +43,34 @@ public class Game {
             this.message = "You Won!!";
         }
     }
+
+    public boolean isServer() {
+        return isServer;
+    }
+
+    public void setServer(boolean server) {
+        isServer = server;
+    }
+
     public void initServer(int port ){
         gameServer = new Server(port);
+        isServer = true;
+        onSession = true;
+
+    }
+    public String getLastMessage(){
+        return this.gameServer.getMessage();
+    }
+    public void sendMessage(int choice){
+        this.gameServer.sendMessage(choice);
+
+    }
+
+    public boolean isOnSession() {
+        return onSession;
+    }
+
+    public void setOnSession(boolean onSession) {
+        this.onSession = onSession;
     }
 }

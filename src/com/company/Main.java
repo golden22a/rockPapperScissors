@@ -6,6 +6,7 @@ import com.player.Player;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class Main extends processing.core.PApplet{
@@ -13,6 +14,7 @@ public class Main extends processing.core.PApplet{
     int time = 60;
     int itemsIndex = 0;
     int iteration = 0;
+    int playerTwoChoice = -1;
     PImage computerImg;
     PImage multiImg;
     Item rockImg;
@@ -50,7 +52,6 @@ public class Main extends processing.core.PApplet{
         fill(0);
         textSize(40);
         player = new Player("Halim");
-
     }
     public void draw(){
         if(!gameStarted) {
@@ -81,9 +82,15 @@ public class Main extends processing.core.PApplet{
                             }
                             time++;
                         }
-                        else{
-
-            }
+                        else if(playerChoised ){
+                            if(playerTwoChoice != -1){
+                                temp = Item.getPimage(choices.get( playerTwoChoice));
+                                game.getWinner(player.getChoice(),Item.toString(choices.get(playerTwoChoice)));
+                                playerTwoChoice = -1;
+                                playerChoised = false;
+                                game.setOnSession(false);
+                            }
+                        }
 
             image(temp, 550, 100, 200, 200);
             image(Item.getPimage(choices.get(0)), 250, 350, 200, 200);
@@ -100,33 +107,77 @@ public class Main extends processing.core.PApplet{
         }
         else if (mouseX >= 720 && mouseX <= 920 && mouseY >=200 && mouseY <=400 && !gameStarted ){
             game = new Game(1,"Game started for multiplayer session");
+            gameStarted = true;
             player.initSocket();
             System.out.println(player.isConnected());
             if(!player.isConnected()){
                 game.initServer(5000);
+                playerTwoChoice = Integer.parseInt(game.getLastMessage());
+
             }
-
-
         }
         else if(mouseX >= 250 && mouseX <=450 && mouseY >=350 && mouseY <=550 && gameStarted && !playerChoised){
+
             playerChoised = true;
-            computerChoice = (int )(Math.random() * 3 + 200);
-            System.out.println(computerChoice);
             player.setChoice(Item.toString(choices.get(0)));
+            System.out.println(game.isServer());
+            if(game.getType() == 0) {
+                computerChoice = (int) (Math.random() * 3 + 200);
+                System.out.println(computerChoice);
+            }
+            else if (!game.isServer()){
+                player.sendMessage(0);
+                playerTwoChoice = Integer.parseInt(player.getMessage());
+                System.out.println(playerTwoChoice);
+            }else{
+                game.sendMessage(0);
+                if(!game.isOnSession())
+                    playerTwoChoice = Integer.parseInt(game.getLastMessage());
+
+            }
 
         }
         else if (mouseX >= 550 && mouseX <=750 && mouseY >=350 && mouseY <=550 && gameStarted && !playerChoised){
+
             playerChoised = true;
-            computerChoice = (int )(Math.random() * 3 + 200);
-            System.out.println(computerChoice);
             player.setChoice(Item.toString(choices.get(1)));
+            System.out.println(game.isServer());
+            if(game.getType() == 0) {
+                computerChoice = (int) (Math.random() * 3 + 200);
+                System.out.println(computerChoice);
+            }
+            else if (!game.isServer()){
+                player.sendMessage(1);
+                playerTwoChoice = Integer.parseInt(player.getMessage());
+                System.out.println(playerTwoChoice);
+            }
+            else {
+                if(!game.isOnSession())
+                    playerTwoChoice = Integer.parseInt(game.getLastMessage());
+                game.sendMessage(1);
+
+
+            }
         }
         else if(mouseX >= 850 && mouseX <=1050 && mouseY >=350 && mouseY <=550 && gameStarted && !playerChoised){
             playerChoised = true;
-            computerChoice = (int )(Math.random() * 3 + 200);
-            System.out.println(computerChoice);
             player.setChoice(Item.toString(choices.get(2)));
+            System.out.println(game.isServer());
+            if(game.getType() == 0) {
+                computerChoice = (int) (Math.random() * 3 + 200);
+                System.out.println(computerChoice);
+            }
+            else if (!game.isServer()){
+                player.sendMessage(2);
+                playerTwoChoice = Integer.parseInt(player.getMessage());
+                System.out.println(playerTwoChoice);
+            }
+            else{
+                game.sendMessage(2);
+                if(!game.isOnSession())
+                    playerTwoChoice = Integer.parseInt(game.getLastMessage());
 
+            }
         }
     }
 }

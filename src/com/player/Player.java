@@ -8,6 +8,7 @@ public class Player {
     private String name;
     private String choice;
     private Client playerClient = null;
+    private Boolean session = false;
     public Player(String name){
         this.name = name;
         choice=null;
@@ -34,6 +35,20 @@ public class Player {
     }
 
    public boolean isConnected(){
+
        return playerClient.isConnected();
    }
+   public void sendMessage(int choice){
+        this.playerClient.sendMessage(choice);
+   }
+   public String getMessage(){
+
+      String message =  this.playerClient.getMessage();
+       this.session=true;
+       return message;
+   }
+
+    public Boolean getSession() {
+        return session;
+    }
 }

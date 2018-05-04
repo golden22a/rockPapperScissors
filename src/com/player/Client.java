@@ -1,8 +1,6 @@
 package com.player;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class Client {
@@ -51,4 +49,27 @@ public class Client {
     public boolean isConnected(){
         return this.connected;
     }
+    public void sendMessage(int choice){
+        try {
+            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            out.write(""+choice);
+            out.newLine();
+            out.flush();
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+    }
+    public String getMessage(){
+        try {
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            return in.readLine();
+        }
+        catch(IOException e){
+            System.out.println(e);
+            return "No message fetched";
+        }
+    }
+
+
 }
