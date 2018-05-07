@@ -6,8 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
+//  class to undle the files
 public class FileHundler {
+    // methode to replace a line in a text file
     private static void replace(String old , String n)  {
         List<String> fileContent = null;
         try {
@@ -24,6 +25,7 @@ public class FileHundler {
             e.printStackTrace();
         }
     }
+    // get user available user from text file
     public static String getUser() {
         try {
             Boolean found = false;
@@ -50,9 +52,11 @@ public class FileHundler {
         }
 
     }
+    // release user lock
     public static void unset(String line){
         replace(line+"     used",line);
     }
+    //write in the history.txt
     public static void addHistory(String line){
         try{
         String str = line;
@@ -64,6 +68,7 @@ public class FileHundler {
         }
 
     }
+    // return the history of a user by name
     public static List<String> getHistory(String name) {
         List<String> content = new ArrayList<>();
         try {

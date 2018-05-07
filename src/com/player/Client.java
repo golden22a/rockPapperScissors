@@ -2,7 +2,7 @@ package com.player;
 
 import java.io.*;
 import java.net.Socket;
-
+// client socker
 public class Client {
     private Socket socket ;
     private BufferedReader in  =  null;
@@ -23,29 +23,7 @@ public class Client {
 
     }
 
-    public Socket getSocket() {
-        return socket;
-    }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
-    public BufferedReader getIn() {
-        return in;
-    }
-
-    public void setIn(BufferedReader in) {
-        this.in = in;
-    }
-
-    public BufferedWriter getOut() {
-        return out;
-    }
-
-    public void setOut(BufferedWriter out) {
-        this.out = out;
-    }
     public boolean isConnected(){
         return this.connected;
     }

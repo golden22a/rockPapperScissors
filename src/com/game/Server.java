@@ -3,12 +3,15 @@ package com.game;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+// hundlign the server socket
 public class Server {
+    // socket for host and communication
     private Socket socket   = null;
     private ServerSocket server   = null;
+    // buffer for read and write
     private BufferedReader in       =  null;
     private BufferedWriter out =  null;
+    // last message recieved
     private String lastMessage = "";
     public Server(int port){
         try {

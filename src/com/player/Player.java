@@ -1,9 +1,6 @@
 package com.player;
 
-import com.game.Item;
-
-import java.net.Socket;
-
+// player class
 public class Player {
     private String name;
     private String choice;
@@ -14,9 +11,6 @@ public class Player {
         choice=null;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getChoice() {
         return choice;
@@ -33,7 +27,7 @@ public class Player {
         playerClient = new Client(5000);
 
     }
-
+    // check if connecton was etablished
    public boolean isConnected(){
 
        return playerClient.isConnected();
@@ -48,7 +42,4 @@ public class Player {
        return message;
    }
 
-    public Boolean getSession() {
-        return session;
-    }
 }
