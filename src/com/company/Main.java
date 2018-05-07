@@ -1,5 +1,6 @@
 package com.company;
 
+import com.game.FileHundler;
 import com.game.Game;
 import com.game.Item;
 import com.player.Player;
@@ -8,6 +9,7 @@ import processing.core.PImage;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends processing.core.PApplet{
     int computerChoice;
@@ -17,6 +19,7 @@ public class Main extends processing.core.PApplet{
     int playerTwoChoice = -1;
     PImage computerImg;
     PImage multiImg;
+    PImage historyImg;
     Item rockImg;
     Item paperImg;
     Item scissorsImg;
@@ -25,12 +28,20 @@ public class Main extends processing.core.PApplet{
     boolean gameStarted = false;
     Player player;
     boolean playerChoised = false;
+    boolean showHistory = false;
     PImage temp;
     String message;
+    String[] userData;
+    List<String> history;
+    String historyToDisplay="";
+    int historyIndex = 0;
+    int pagination;
 
 
 
     public static void main(String[] args)   {
+
+
             PApplet.main("com.company.Main",args);
         }
     public void settings(){
@@ -39,11 +50,13 @@ public class Main extends processing.core.PApplet{
 
     }
     public void setup(){
+
         computerImg = loadImage("user.png");
         multiImg = loadImage("multiple.png");
         rockImg = new Item(loadImage("rock.png"),"rock");
         paperImg = new Item(loadImage("paper.png"),"paper");
         scissorsImg = new Item (loadImage("scissors.png"),"scissors");
+        historyImg = loadImage("history.png");
         choices = new ArrayList();
         choices.add(rockImg);
         choices.add(paperImg);
@@ -51,18 +64,30 @@ public class Main extends processing.core.PApplet{
         temp = rockImg.getAction();
         fill(0);
         textSize(40);
-        player = new Player("Halim");
+         String line = FileHundler.getUser();
+         userData = line.split("\\s+");
+        if(line.equals("not found") || line.equals("file not found") || line.equals("IO exception"))
+            exit();
+        player = new Player(userData[1]);
+        ExitThread exitThread = new ExitThread(line);
+        Runtime.getRuntime().addShutdownHook(exitThread);
     }
     public void draw(){
-        if(!gameStarted) {
-            background(255);
+        background(255);
+        text("Welcome "+player.getName(),400, 100);
+        if(!gameStarted && !showHistory) {
+
             image(computerImg, 300, 200, 200, 200);
             image(multiImg, 720, 200, 200, 200);
             text("play vs Computer", 250, 450);
             text("play vs Player", 680, 450);
+            image(historyImg, 1100, 10, 100, 100);
+
+        }else if(!gameStarted && showHistory){
+            background(255);
+            text(historyToDisplay,100, 100);
         }
         else {
-            background(255);
                         if(playerChoised && game.getType() == 0) {
 
                             if (time  % 5 == 0) {
@@ -101,18 +126,34 @@ public class Main extends processing.core.PApplet{
 
     }
     public void mousePressed(){
+
         if(mouseX >= 300 && mouseX <=500 && mouseY >=200 && mouseY <=400 && !gameStarted){
             gameStarted=true;
-            game=new Game(0,"Game Started!");
+            game=new Game(0,"Game Started!",player);
         }
         else if (mouseX >= 720 && mouseX <= 920 && mouseY >=200 && mouseY <=400 && !gameStarted ){
-            game = new Game(1,"Game started for multiplayer session");
+            game = new Game(1,"Game started for multiplayer session",player);
             gameStarted = true;
             player.initSocket();
             System.out.println(player.isConnected());
             if(!player.isConnected()){
                 game.initServer(5000);
                 playerTwoChoice = Integer.parseInt(game.getLastMessage());
+            }
+        }
+        else if(mouseX >= 1100 && mouseX <= 1200 && mouseY >=10 && mouseY <=110){
+            showHistory=true;
+            history=FileHundler.getHistory(player.getName());
+            if(history.size() % 8 == 0){
+                pagination=history.size()/8-1;
+            }else{
+                pagination=history.size()/8;
+            }
+            for(int i=0;i<history.size();i++){
+                if(i == 8){
+                    break;
+                }
+                historyToDisplay += history.get(i)+"\n";
 
             }
         }
@@ -152,9 +193,9 @@ public class Main extends processing.core.PApplet{
                 System.out.println(playerTwoChoice);
             }
             else {
+                game.sendMessage(1);
                 if(!game.isOnSession())
                     playerTwoChoice = Integer.parseInt(game.getLastMessage());
-                game.sendMessage(1);
 
 
             }
@@ -179,5 +220,36 @@ public class Main extends processing.core.PApplet{
 
             }
         }
+
+
+    }
+    public void keyPressed(){
+        System.out.println(keyCode);
+        if(keyCode == 39){
+            historyIndex++;
+            historyToDisplay="";
+        if(historyIndex > pagination){
+            historyIndex=0;
+        }
+        for(int i=historyIndex*8;i<historyIndex*8+8;i++){
+            if( i >= history.size()){
+                break;
+            }
+            historyToDisplay += history.get(i)+"\n";
+            }
+        }else if(keyCode == 37){
+            historyIndex--;
+            historyToDisplay="";
+            if(historyIndex < 0){
+                historyIndex=pagination;
+            }
+            for(int i=historyIndex*8;i<historyIndex*8+8;i++){
+                if( i >= history.size()){
+                    break;
+                }
+                historyToDisplay += history.get(i)+"\n";
+            }
+        }
+
     }
 }

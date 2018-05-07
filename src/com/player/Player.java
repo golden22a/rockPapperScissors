@@ -39,7 +39,7 @@ public class Player {
        return playerClient.isConnected();
    }
    public void sendMessage(int choice){
-        this.playerClient.sendMessage(choice);
+        this.playerClient.sendMessage(this.getName()+"  "+choice);
    }
    public String getMessage(){
 

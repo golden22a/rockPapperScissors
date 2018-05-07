@@ -1,0 +1,18 @@
+Halim     Computer     You Won!!    2018/05/06 18:14:05
+Halim     Computer     You Lost!!    2018/05/06 18:14:08
+Halim     Computer     You Lost!!!    2018/05/06 18:14:10
+Halim     Computer     You Lost!!!    2018/05/06 18:33:32
+Halim     Computer     You Won!!    2018/05/06 18:33:35
+Halim     Computer      It's a Tie    2018/05/06 18:33:38
+Halim     Computer      It's a Tie    2018/05/06 18:33:40
+Halim     Computer     You Lost!!!    2018/05/06 18:33:43
+Halim     Computer     You Lost!!!    2018/05/06 18:44:16
+Halim     Computer      It's a Tie    2018/05/06 18:44:19
+NotHalim     Computer     You Won!!    2018/05/06 18:50:07
+Halim     Computer     You Lost!!!    2018/05/06 19:18:54
+Halim     NotHalim     Halim    2018/05/07 00:37:19
+Halim     NotHalim     You Lost!!!    2018/05/07 00:50:58
+Halim     NotHalim     Halim    2018/05/07 00:52:56
+Halim     NotHalim     NotHalim    2018/05/07 00:53:00
+Halim     NotHalim      It's a Tie    2018/05/07 00:53:03
+Halim     NotHalim     NotHalim    2018/05/07 00:53:07

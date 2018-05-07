@@ -49,10 +49,10 @@ public class Client {
     public boolean isConnected(){
         return this.connected;
     }
-    public void sendMessage(int choice){
+    public void sendMessage(String choice){
         try {
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            out.write(""+choice);
+            out.write(choice);
             out.newLine();
             out.flush();
         }
